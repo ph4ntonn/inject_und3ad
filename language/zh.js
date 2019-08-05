@@ -11,7 +11,7 @@ module.exports = {
         inject_success: "植入成功"
     },
     prompt: {
-        rm_file: "请输入远端控制文件地址及轮询时间(以###分隔)"
+        rm_file: "请输入远端文件地址及轮询时间"
     },
     cell:{
         path:"远端控制文件"
