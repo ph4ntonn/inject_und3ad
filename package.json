@@ -1,0 +1,17 @@
+{
+"name": "注入不死php webshell",
+"name_en": "Inject undead php webshell",
+"main": "index.js",
+"icon": "eye",
+"version": "0.1",
+"description": "在目标服务器植入不死php木马以获得长期权限",
+"description_en": "Inject the undead php webshell into target server to access long-term control ",
+"author": {
+ "name": "ph4ntom",
+ "email": "ph4ntom11235@gmail.com"
+},
+"category": "维持权限",
+"category_en": "Maintain the access",
+"multiple": false,
+"scripts": ["php"]
+}
