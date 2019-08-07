@@ -8,7 +8,7 @@
 
 * 权限维持
 
-![inject_undead.png](./img/inject_undead.png)
+![inject_undead_webshell.png](./img/inject_undead_webshell.png)
 
 点击左上角远程文件按钮，输入远程控制文件地址以及轮询时间（以秒为单位），点击确定即可（分隔符为###）
 
