@@ -5,12 +5,13 @@
 const WIN = require('ui/window');
 const LANG = require('../language/');
 const LANG_T = antSword["language"]['toastr'];
-
+const fs = require('fs');
+const readline = require('readline');
 
 class UI {
   constructor(opt) {
     // 创建窗口
-    this.opt=opt;
+    this.opt = opt;
     this.win = new WIN({
       title: `${LANG['title']}----- ${opt['url']}`,
       width: 666,
@@ -32,16 +33,14 @@ class UI {
 
     //检查远端控制文件
     let griddata = [];
-    const readline = require('readline');
-    var fs = require('fs');
     const rl = readline.createInterface({
-      input: fs.createReadStream(__dirname+'\\..\\db\\rm_shell.txt')
+      input: fs.createReadStream(path.join(__dirname, '../db/rm_shell.txt'))
     });
     rl.on('line', (line) => {
-      if (line.split(" : ")[0]==this.opt['url']){
+      if (line.split(" : ")[0] == this.opt['url']) {
         var item = antSword.noxss(line.split(" : ")[1]);
         griddata.push({
-          data:item.split('\t')
+          data: item.split('\t')
         });
         this.grid.clearAll();
         this.grid.parse({
@@ -55,7 +54,7 @@ class UI {
     layout.cells('a').setText(`<i class="fa fa-bars"></i> ${LANG['cell']['path']}`);
     this.createToolbar();
     this.createGrid(layout.cells('a'));
-    this.layout=layout;
+    this.layout = layout;
 
   }
 
@@ -83,47 +82,50 @@ class UI {
    */
   createToolbar() {
     let toolbar = this.win.win.attachToolbar();
-    toolbar.loadStruct([
-      { id: 'new',type: 'button', text: LANG['toolbar']['new'], icon: 'plus-circle'}
-    ]);
+    toolbar.loadStruct([{
+      id: 'new',
+      type: 'button',
+      text: LANG['toolbar']['new'],
+      icon: 'plus-circle'
+    }]);
     this.toolbar = toolbar;
   }
 
   /**
-  * 监听按钮点击事件
-  * @param  {Function} callback [description]
-  * @return {[type]}            [description]
-  */
+   * 监听按钮点击事件
+   * @param  {Function} callback [description]
+   * @return {[type]}            [description]
+   */
   bindToolbarClickHandler(callback) {
     let self = this;
     this.toolbar.attachEvent('onClick', (id) => {
-      switch(id){
-      case "new":
-        layer.prompt({
-          value: "",
-          title: `<i class="fa fa-file-code-o"></i> ${LANG["prompt"]["rm_file"]}`
-        },(value,i, e) => {
-          layer.close(i);
-          this.win.win.progressOn();
-          callback({
-            type:"rm_file",
-            rm_file: value,
-            shell:this.opt['url'],
-          }).then((result) => {
-            if(result){
+      switch (id) {
+        case "new":
+          layer.prompt({
+            value: "",
+            title: `<i class="fa fa-file-code-o"></i> ${LANG["prompt"]["rm_file"]}`
+          }, (value, i, e) => {
+            layer.close(i);
+            this.win.win.progressOn();
+            callback({
+              type: "rm_file",
+              rm_file: value,
+              shell: this.opt['url'],
+            }).then((result) => {
+              if (result) {
+                this.win.win.progressOff();
+                toastr.success(LANG["message"]["inject_success"], LANG_T['success']);
+              }
+            }).catch((err) => {
+              if (err == "Unexpected value") {
+                toastr.error(LANG['error']['value_wrong'], antSword['language']['toastr']['error']);
+              } else {
+                toastr.error(LANG['error']['wrong'], antSword['language']['toastr']['error']);
+              }
               this.win.win.progressOff();
-              toastr.success(LANG["message"]["inject_success"], LANG_T['success']);
-            }
-          }).catch((err) => {
-            if (err=="Unexpected value"){
-              toastr.error(LANG['error']['value_wrong'], antSword['language']['toastr']['error']);
-            }
-            else {
-              toastr.error(LANG['error']['wrong'], antSword['language']['toastr']['error']);
-            }
-            this.win.win.progressOff();})
-        });
-        break
+            })
+          });
+          break
       }
     });
   }
